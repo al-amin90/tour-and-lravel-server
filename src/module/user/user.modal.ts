@@ -30,6 +30,18 @@ const userSchema = new Schema<IUser>({
   },
 });
 
+// userSchema.pre('find', function (next) {
+//   this.find({ userStatus: { $eq: 'active' } });
+//   next();
+// });
+
+// userSchema.post('find', function (docs, next) {
+//   docs.forEach((d: IUser) => {
+//     d.name = d.name.toUpperCase();
+//   });
+//   next();
+// });
+
 const UserModal = model<IUser>('User', userSchema);
 
 export default UserModal;

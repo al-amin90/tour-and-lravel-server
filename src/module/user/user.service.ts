@@ -12,7 +12,7 @@ const getUserFromDB = async () => {
 };
 
 const getSingleUserFromDB = async (id: string) => {
-  const result = await UserModal.findOne({ _id: id });
+  const result = await UserModal.findById(id);
   return result;
 };
 

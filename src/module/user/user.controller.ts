@@ -62,15 +62,16 @@ const updateSingleUser = async (req: Request, res: Response) => {
 
   try {
     const result = await userService.updateSingleUserIntoDB(id, payload);
+    console.log('result', result);
     res.status(200).json({
       status: true,
-      message: 'Get Single User Successfully',
+      message: 'update Single User Successfully',
       data: result,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: 'failed to get single user',
+      message: 'failed to update Single User',
       error,
     });
   }
