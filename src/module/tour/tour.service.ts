@@ -26,10 +26,17 @@ const deleteTourInDB = async (id: string) => {
   return result;
 };
 
+const cancelOrderInDB = async (id: string) => {
+  const cancelled = await TourModal.findById(id);
+  await cancelled?.cancelOrder();
+  return cancelled;
+};
+
 export default {
   createTourIntoDB,
   getTourInDB,
   getSingleTourInDB,
   updateSingleTour,
   deleteTourInDB,
+  cancelOrderInDB,
 };

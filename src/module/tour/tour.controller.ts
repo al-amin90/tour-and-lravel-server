@@ -103,10 +103,30 @@ const deleteTour = async (req: Request, res: Response) => {
   }
 };
 
+const cancelOrder = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const result = await tourService.cancelOrderInDB(id);
+    res.status(200).json({
+      success: true,
+      message: 'Tour order cancle Successfully',
+      data: result,
+    });
+  } catch (error) {
+    console.log('error', error);
+    res.status(400).json({
+      success: false,
+      message: 'Tour order cancle not Successfully',
+      data: error,
+    });
+  }
+};
+
 export default {
   createTour,
   getTour,
   getSingleTour,
   deleteTour,
   updateSingleTour,
+  cancelOrder,
 };

@@ -8,5 +8,6 @@ tourRouter.get('/', tourController.getTour);
 tourRouter.get('/:id', tourController.getSingleTour);
 tourRouter.put('/:id', tourController.updateSingleTour);
 tourRouter.delete('/:id', tourController.deleteTour);
+tourRouter.delete('/:id/cancle', tourController.cancelOrder);
 
 export default tourRouter;
