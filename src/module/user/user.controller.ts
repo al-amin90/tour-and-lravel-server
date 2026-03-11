@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import userService from './user.service';
+import SendResponse from '../../utils/SendResponse';
+import status from 'http-status';
 
 const createUser = async (req: Request, res: Response) => {
   const payload = req.body;
@@ -63,8 +65,9 @@ const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const result = await userService.updateSingleUserIntoDB(id, payload);
     console.log('result', result);
-    res.status(200).json({
-      status: true,
+
+    SendResponse(res, {
+      statusCode: status.CREATED,
       message: 'update Single User Successfully',
       data: result,
     });
