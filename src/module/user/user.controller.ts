@@ -2,101 +2,67 @@ import { Request, Response } from 'express';
 import userService from './user.service';
 import SendResponse from '../../utils/SendResponse';
 import status from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  try {
-    const result = await userService.createUserIntoDB(payload);
-    res.status(200).json({
-      status: true,
-      message: 'Create User Successfully',
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: 'failed to create user',
-      error,
-    });
-  }
-};
+  const result = await userService.createUserIntoDB(payload);
 
-const getUser = async (req: Request, res: Response) => {
-  try {
-    const result = await userService.getUserFromDB();
-    res.status(200).json({
-      status: true,
-      message: 'Get User Successfully',
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: 'failed to get user',
-      error,
-    });
-  }
-};
+  SendResponse(res, {
+    statusCode: status.CREATED,
+    message: 'Create User Successfully',
+    data: result,
+  });
+});
 
-const getSingleUser = async (req: Request, res: Response) => {
+const getUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.getUserFromDB();
+
+  SendResponse(res, {
+    statusCode: status.OK,
+    message: 'Get User Successfully',
+    data: result,
+  });
+});
+
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  try {
-    const result = await userService.getSingleUserFromDB(id);
-    res.status(200).json({
-      status: true,
-      message: 'Get Single User Successfully',
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: 'failed to get single user',
-      error,
-    });
-  }
-};
+  const result = await userService.getSingleUserFromDB(id);
 
-const updateSingleUser = async (req: Request, res: Response) => {
+  SendResponse(res, {
+    statusCode: status.OK,
+    message: 'Get Single User Successfully',
+    data: result,
+  });
+});
+
+const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const payload = req.body;
 
-  try {
-    const result = await userService.updateSingleUserIntoDB(id, payload);
-    console.log('result', result);
+  const result = await userService.updateSingleUserIntoDB(id, payload);
+  console.log('result', result);
 
-    SendResponse(res, {
-      statusCode: status.CREATED,
-      message: 'update Single User Successfully',
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: 'failed to update Single User',
-      error,
-    });
-  }
-};
+  SendResponse(res, {
+    statusCode: status.CREATED,
+    message: 'update Single User Successfully',
+    data: result,
+  });
+});
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  try {
-    const result = await userService.deleteSingleUserFromDB(id);
-    res.status(200).json({
-      status: true,
-      message: 'delete User Successfully',
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: 'failed to delete user',
-      error,
-    });
-  }
-};
+
+  const result = await userService.deleteSingleUserFromDB(id);
+
+  SendResponse(res, {
+    statusCode: status.OK,
+    message: 'delete User Successfully',
+    data: result,
+  });
+});
 
 export default {
   createUser,

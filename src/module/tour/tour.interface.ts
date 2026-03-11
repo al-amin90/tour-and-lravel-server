@@ -4,6 +4,7 @@ export interface ITour extends Document {
   name: string;
   durationHours: number;
   averageRating: number;
+  availableSeats: number;
   price: number;
   coverImage: string;
   image: string[];
