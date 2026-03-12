@@ -1,65 +1,60 @@
 import { Request, Response } from 'express';
-import tourService from './tour.service';
 import mongoose from 'mongoose';
+import bookingService from './booking.service';
+import catchAsync from '../../utils/catchAsync';
+import SendResponse from '../../utils/SendResponse';
+import status from 'http-status';
 
-const createTour = async (req: Request, res: Response) => {
+const createBooking = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
+  const result = await bookingService.createBookingIntoDB(payload);
+
+  SendResponse(res, {
+    statusCode: status.OK,
+    message: 'Booking Create Successfully',
+    data: result,
+  });
+});
+
+const getBooking = async (req: Request, res: Response) => {
   try {
-    const result = await tourService.createTourIntoDB(payload);
+    const result = await bookingService.getBookingInDB();
     res.status(200).json({
       success: true,
-      message: 'Tour Create Successfully',
+      message: 'Booking Get all Successfully',
       data: result,
     });
   } catch (error) {
     console.log('error', error);
     res.status(400).json({
       success: false,
-      message: 'Tour not Create Successfully',
+      message: 'Booking not get Successfully',
       data: error,
     });
   }
 };
 
-const getTour = async (req: Request, res: Response) => {
-  try {
-    const result = await tourService.getTourInDB();
-    res.status(200).json({
-      success: true,
-      message: 'Tour Get all Successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.log('error', error);
-    res.status(400).json({
-      success: false,
-      message: 'Tour not get Successfully',
-      data: error,
-    });
-  }
-};
-
-const getSingleTour = async (req: Request, res: Response) => {
+const getSingleBooking = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const result = await tourService.getSingleTourInDB(id);
+    const result = await bookingService.getSingleBookingInDB(id);
     res.status(200).json({
       success: true,
-      message: 'Tour data get Successfully',
+      message: 'Booking data get Successfully',
       data: result,
     });
   } catch (error) {
     console.log('error', error);
     res.status(400).json({
       success: false,
-      message: 'Tour data not get Successfully',
+      message: 'Booking data not get Successfully',
       data: error,
     });
   }
 };
 
-const updateSingleTour = async (req: Request, res: Response) => {
+const updateSingleBooking = async (req: Request, res: Response) => {
   const { id } = req.params;
   const payload = req.body;
 
@@ -68,65 +63,45 @@ const updateSingleTour = async (req: Request, res: Response) => {
       throw new Error(`Invalid id: ${id}`);
     }
 
-    const result = await tourService.updateSingleTour(id, payload);
+    const result = await bookingService.updateSingleBooking(id, payload);
     res.status(200).json({
       success: true,
-      message: 'Tour update Successfully',
+      message: 'Booking update Successfully',
       data: result,
     });
   } catch (error) {
     console.log('error', error);
     res.status(400).json({
       success: false,
-      message: 'Tour update not Successfully',
+      message: 'Booking update not Successfully',
       data: error,
     });
   }
 };
 
-const deleteTour = async (req: Request, res: Response) => {
+const deleteBooking = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const result = await tourService.deleteTourInDB(id);
+    const result = await bookingService.deleteBookingInDB(id);
     res.status(200).json({
       success: true,
-      message: 'Tour delete Successfully',
+      message: 'Booking delete Successfully',
       data: result,
     });
   } catch (error) {
     console.log('error', error);
     res.status(400).json({
       success: false,
-      message: 'Tour delete not Successfully',
-      data: error,
-    });
-  }
-};
-
-const cancelOrder = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const result = await tourService.cancelOrderInDB(id);
-    res.status(200).json({
-      success: true,
-      message: 'Tour order cancle Successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.log('error', error);
-    res.status(400).json({
-      success: false,
-      message: 'Tour order cancle not Successfully',
+      message: 'Booking delete not Successfully',
       data: error,
     });
   }
 };
 
 export default {
-  createTour,
-  getTour,
-  getSingleTour,
-  deleteTour,
-  updateSingleTour,
-  cancelOrder,
+  createBooking,
+  getBooking,
+  getSingleBooking,
+  deleteBooking,
+  updateSingleBooking,
 };

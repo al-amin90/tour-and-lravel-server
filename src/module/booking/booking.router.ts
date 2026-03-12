@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import tourController from './tour.controller';
+import bookingController from './booking.controller';
 
-const tourRouter = Router();
+const bookingRouter = Router();
 
-tourRouter.post('/create', tourController.createTour);
-tourRouter.get('/', tourController.getTour);
-tourRouter.get('/:id', tourController.getSingleTour);
-tourRouter.put('/:id', tourController.updateSingleTour);
-tourRouter.delete('/:id', tourController.deleteTour);
-tourRouter.delete('/:id/cancle', tourController.cancelOrder);
+bookingRouter.post('/create', bookingController.createBooking);
+bookingRouter.get('/', bookingController.getBooking);
+bookingRouter.get('/:id', bookingController.getSingleBooking);
+bookingRouter.put('/:id', bookingController.updateSingleBooking);
+bookingRouter.delete('/:id', bookingController.deleteBooking);
 
-export default tourRouter;
+export default bookingRouter;

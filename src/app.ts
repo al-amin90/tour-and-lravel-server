@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import userRouter from './module/user/user.router';
 import tourRouter from './module/tour/tour.router';
 import status from 'http-status';
+import bookingRouter from './module/booking/booking.router';
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use('/api/user', userRouter);
 app.use('/api/tour', tourRouter);
+app.use('/api/booking', bookingRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).send('Hello World!');

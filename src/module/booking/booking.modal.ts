@@ -5,15 +5,15 @@ const bookingSchema = new Schema<IBooking>(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User', // Reference to the User model
+      ref: 'User',
       required: [true, 'User is required'],
-      index: true, // Add index for better query performance
+      index: true,
     },
     tour: {
       type: Schema.Types.ObjectId,
-      ref: 'Tour', // Reference to the Tour model
+      ref: 'Tour',
       required: [true, 'Tour is required'],
-      index: true, // Add index for better query performance
+      index: true,
     },
     bookedSlots: {
       type: Number,
@@ -24,7 +24,6 @@ const bookingSchema = new Schema<IBooking>(
       type: String,
       enum: {
         values: ['pending', 'paid', 'cancelled'],
-        message: '{VALUE} is not a valid booking status',
       },
       default: 'pending',
       required: [true, 'Booking status is required'],
@@ -42,6 +41,6 @@ const bookingSchema = new Schema<IBooking>(
 
 bookingSchema.index({ user: 1, tour: 1 });
 
-const BookingModal = model<IBooking>('Tour', bookingSchema);
+const BookingModal = model<IBooking>('Booking', bookingSchema);
 
 export default BookingModal;
