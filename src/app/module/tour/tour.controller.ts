@@ -1,26 +1,18 @@
 import { Request, Response } from 'express';
 import tourService from './tour.service';
 import mongoose from 'mongoose';
+import catchAsync from '../../utils/catchAsync';
 
-const createTour = async (req: Request, res: Response) => {
+const createTour = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  try {
-    const result = await tourService.createTourIntoDB(payload);
-    res.status(200).json({
-      success: true,
-      message: 'Tour Create Successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.log('error', error);
-    res.status(400).json({
-      success: false,
-      message: 'Tour not Create Successfully',
-      data: error,
-    });
-  }
-};
+  const result = await tourService.createTourIntoDB(payload);
+  res.status(200).json({
+    success: true,
+    message: 'Tour Create Successfully',
+    data: result,
+  });
+});
 
 const getTour = async (req: Request, res: Response) => {
   try {

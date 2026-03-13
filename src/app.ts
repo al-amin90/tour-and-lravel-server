@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import express, { NextFunction, Request, Response } from 'express';
-import userRouter from './module/user/user.router';
-import tourRouter from './module/tour/tour.router';
-import status from 'http-status';
-import bookingRouter from './module/booking/booking.router';
+import userRouter from './app/module/user/user.router';
+import tourRouter from './app/module/tour/tour.router';
+import bookingRouter from './app/module/booking/booking.router';
+import NotFound from './app/middlewares/NotFound';
+import GlobalErrorHandler from './app/middlewares/GlobalErrorHandler';
 
 const app = express();
 
@@ -18,20 +20,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // ==========> global error handler
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(status.INTERNAL_SERVER_ERROR).json({
-    success: false,
-    message: err.message,
-    error: err,
-  });
-});
 
-app.all('*', (req: Request, res: Response) => {
-  res.status(400).json({
-    success: false,
-    message: 'Route is not found',
-  });
-});
+app.use(GlobalErrorHandler);
+app.use(NotFound);
 
 export default app;
