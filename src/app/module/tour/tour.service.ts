@@ -13,8 +13,14 @@ const getTourInDB = async (query: Record<string, unknown>) => {
 
   const searchableFields = ['name', 'startLocation', 'locations'];
 
-  const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'selects'];
-
+  const excludeFields = [
+    'searchTerm',
+    'sortBy',
+    'sortOrder',
+    'limit',
+    'page',
+    'selects',
+  ];
   excludeFields?.forEach((key) => delete queryObj[key]);
 
   const searchQuery = TourModal.find({
@@ -23,9 +29,26 @@ const getTourInDB = async (query: Record<string, unknown>) => {
     })),
   });
 
-  const result = await searchQuery.find(queryObj);
+  const filterQuery = searchQuery.find(queryObj);
 
-  return result;
+  const page = Number(query?.page) || 1;
+  const limit = Number(query?.limit) || 10;
+
+  const skip = (page - 1) * limit;
+
+  const paginationQuery = filterQuery.skip(skip).limit(limit);
+
+  let sort = '-price';
+  if (query?.sortOrder && query?.sortBy) {
+    const sortBy = query?.sortBy;
+    const sortOrder = query?.sortOrder;
+    sort = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
+  }
+  console.log('sort', sort);
+
+  const sortQuery = await paginationQuery.sort(sort);
+
+  return sortQuery;
 };
 
 const getSingleTourInDB = async (id: string) => {
