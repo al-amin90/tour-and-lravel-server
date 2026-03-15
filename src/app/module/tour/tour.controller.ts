@@ -14,20 +14,9 @@ const createTour = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const createTour = catchAsync(async (req: Request, res: Response) => {
-//   const payload = req.body;
-
-//   const result = await tourService.createTourIntoDB(payload);
-//   res.status(200).json({
-//     success: true,
-//     message: 'Tour Create Successfully',
-//     data: result,
-//   });
-// });
-
 const getTour = async (req: Request, res: Response) => {
   try {
-    const result = await tourService.getTourInDB();
+    const result = await tourService.getTourInDB(req.query);
     res.status(200).json({
       success: true,
       message: 'Tour Get all Successfully',

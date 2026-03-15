@@ -6,8 +6,15 @@ const createTourIntoDB = async (payload: ITour) => {
   return result;
 };
 
-const getTourInDB = async () => {
-  const result = await TourModal.find();
+const getTourInDB = async (query: Record<string, unknown>) => {
+  const searchTerm = query?.searchTerm || '';
+
+  const result = await TourModal.find({
+    $or: [
+      { name: { $regex: searchTerm, $options: 'i' } },
+      { startLocation: { $regex: searchTerm, $options: 'i' } },
+    ],
+  });
   return result;
 };
 
