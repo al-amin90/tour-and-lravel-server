@@ -7,14 +7,24 @@ const createTourIntoDB = async (payload: ITour) => {
 };
 
 const getTourInDB = async (query: Record<string, unknown>) => {
+  const queryObj = { ...query };
+
   const searchTerm = query?.searchTerm || '';
 
-  const result = await TourModal.find({
-    $or: [
-      { name: { $regex: searchTerm, $options: 'i' } },
-      { startLocation: { $regex: searchTerm, $options: 'i' } },
-    ],
+  const searchableFields = ['name', 'startLocation', 'locations'];
+
+  const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'selects'];
+
+  excludeFields?.forEach((key) => delete queryObj[key]);
+
+  const searchQuery = TourModal.find({
+    $or: searchableFields?.map((filed) => ({
+      [filed]: { $regex: searchTerm, $options: 'i' },
+    })),
   });
+
+  const result = await searchQuery.find(queryObj);
+
   return result;
 };
 
