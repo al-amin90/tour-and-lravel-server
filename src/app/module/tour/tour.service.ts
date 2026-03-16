@@ -13,16 +13,6 @@ const getTourInDB = async (query: Record<string, unknown>) => {
 
   const searchableFields = ['name', 'startLocation', 'locations'];
 
-  const excludeFields = [
-    'searchTerm',
-    'sortBy',
-    'sortOrder',
-    'limit',
-    'page',
-    'selects',
-  ];
-  excludeFields?.forEach((key) => delete queryObj[key]);
-
   const searchQuery = TourModal.find({
     $or: searchableFields?.map((filed) => ({
       [filed]: { $regex: searchTerm, $options: 'i' },
