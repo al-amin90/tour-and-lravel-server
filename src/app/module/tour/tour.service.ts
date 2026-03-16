@@ -38,7 +38,7 @@ const getTourInDB = async (query: Record<string, unknown>) => {
 
   const paginationQuery = filterQuery.skip(skip).limit(limit);
 
-  let sort = '-price';
+  let sort;
   if (query?.sortOrder && query?.sortBy) {
     const sortBy = query?.sortBy;
     const sortOrder = query?.sortOrder;
@@ -46,9 +46,16 @@ const getTourInDB = async (query: Record<string, unknown>) => {
   }
   console.log('sort', sort);
 
-  const sortQuery = await paginationQuery.sort(sort);
+  const sortQuery = paginationQuery.sort(sort);
 
-  return sortQuery;
+  let selects = '__v';
+  if (query?.selects) {
+    selects = (query?.selects as string)?.split(',').join(' ');
+  }
+
+  const result = await sortQuery.select(selects);
+
+  return result;
 };
 
 const getSingleTourInDB = async (id: string) => {
